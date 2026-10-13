@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>CinePedia - Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='static/css/style.css') }}">
+</head>
+<body>
+    <div class="nav">
+        <h2>CinePedia</h2>
+        <div>
+            <a href="/cine/nueva">Nueva Peli</a> | 
+            <a href="/logout">Cerrar Sesión</a>
+        </div>
+    </div>
+
+    <h3>Bienvenido, {{ session['usuario_nombre'] }}</h3>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Película</th>
+                <th>Director</th>
+                <th>Fecha de Estreno</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for p in peliculas %}
+            <tr>
+                <td>{{ p.titulo }}</td>
+                <td>{{ p.director }}</td>
+                <td>{{ p.fecha_estreno }}</td>
+                <td>
+                    <a href="/cine/{{ p.id }}">Ver</a>
+                    {% if p.usuario_id == session['usuario_id'] %}
+                        | <a href="/cine/editar/{{ p.id }}">Editar</a>
+                        | <a href="/cine/borrar/{{ p.id }}" onclick="return confirm('¿Seguro?')">Borrar</a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Ver Película</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='static/css/style.css') }}">
+</head>
+<body>
+    <div class="nav">
+        <h2>CinePedia</h2>
+        <div>
+            <a href="/cine">Inicio</a> | 
+            <a href="/logout">Cerrar Sesión</a>
+        </div>
+    </div>
+
+    <div class="box">
+        <h1>{{ pelicula.titulo }}</h1>
+        <p><strong>Publicado por:</strong> {{ pelicula.creador_nombre }}</p>
+        <p><strong>Director:</strong> {{ pelicula.director }}</p>
+        <p><strong>Fecha:</strong> {{ pelicula.fecha_estreno }}</p>
+        <p><strong>Sinopsis:</strong> {{ pelicula.sinopsis }}</p>
+    </div>
+
+    <br>
+
+    <!-- BONUS: No se permite comentar la propia película -->
+    {% if pelicula.usuario_id != session['usuario_id'] %}
+    <div class="box">
+        <form action="/cine/{{ pelicula.id }}/comentar" method="POST">
+            <input type="text" name="contenido" placeholder="Escribe un comentario..." style="width: 70%;" required>
+            <button type="submit">Enviar</button>
+        </form>
+    </div>
+    {% endif %}
+
+    <!-- BONUS: Muestra comentarios más recientes primero -->
+    {% for c in comentarios %}
+    <div class="comment-box">
+        <p><strong>{{ c.autor_nombre }}</strong> - {{ c.created_at.strftime('%d de %B') }}</p>
+        <p>{{ c.contenido }}</p>
+
+        <!-- BONUS: Botón para eliminar sólo si pertenece al usuario actual -->
+        {% if c.usuario_id == session['usuario_id'] %}
+            <a href="/comentario/borrar/{{ c.id }}" class="btn-red">Borrar</a>
+        {% endif %}
+    </div>
+    {% endfor %}
+</body>
+</html>

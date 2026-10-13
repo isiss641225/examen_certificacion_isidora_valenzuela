@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Nueva Película</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='static/css/style.css') }}">
+</head>
+<body>
+    <div class="nav">
+        <h2>CinePedia</h2>
+        <div>
+            <a href="/cine">Inicio</a> | 
+            <a href="/logout">Cerrar Sesión</a>
+        </div>
+    </div>
+
+    <div class="box">
+        <h3>Nueva Película</h3>
+        <form action="/cine/nueva" method="POST">
+            <div>
+                <label>Nombre de Peli:</label><br>
+                {% for m in get_flashed_messages(category_filter=["err_titulo"]) %}
+                    <span class="error">{{ m }}</span>
+                {% endfor %}
+                <input type="text" name="titulo" value="{{ data.titulo if data }}">
+            </div>
+            <div>
+                <label>Director:</label><br>
+                {% for m in get_flashed_messages(category_filter=["err_director"]) %}
+                    <span class="error">{{ m }}</span>
+                {% endfor %}
+                <input type="text" name="director" value="{{ data.director if data }}">
+            </div>
+            <div>
+                <label>Fecha Estreno:</label><br>
+                {% for m in get_flashed_messages(category_filter=["err_fecha"]) %}
+                    <span class="error">{{ m }}</span>
+                {% endfor %}
+                <input type="date" name="fecha_estreno" value="{{ data.fecha_estreno if data }}">
+            </div>
+            <div>
+                <label>Sinopsis:</label><br>
+                {% for m in get_flashed_messages(category_filter=["err_sinopsis"]) %}
+                    <span class="error">{{ m }}</span>
+                {% endfor %}
+                <!-- BONUS: Persiste la sinopsis ingresada al fallar la validación -->
+                <textarea name="sinopsis" rows="4" cols="50">{{ data.sinopsis if data }}</textarea>
+            </div>
+            <br>
+            <button type="submit">Guardar Película</button>
+        </form>
+    </div>
+</body>
+</html>
