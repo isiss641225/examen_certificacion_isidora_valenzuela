@@ -1,12 +1,16 @@
 import pymysql.cursors
 import os
+from dotenv import load_dotenv
+
+# Cargar las variables del archivo .env
+load_dotenv()
 
 class MySQLConnection:
     def __init__(self, db):
         connection = pymysql.connect(
-            host = os.environ.get("DB_HOST", "localhost"),
-            user = os.environ.get("DB_USER", "root"),
-            password = os.environ.get("1234", ""), 
+            host = os.environ.get("MYSQL_HOST", os.environ.get("DB_HOST", "localhost")),
+            user = os.environ.get("MYSQL_USER", os.environ.get("DB_USER", "root")),
+            password = os.environ.get("MYSQL_PASSWORD", os.environ.get("DB_PASSWORD", "1234")),
             db = db,
             charset = 'utf8mb4',
             cursorclass = pymysql.cursors.DictCursor,

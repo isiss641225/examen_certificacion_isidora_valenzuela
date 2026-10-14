@@ -8,7 +8,7 @@ bcrypt = Bcrypt(app)
 @app.route('/')
 def index():
     if 'usuario_id' in session:
-        return redirect('/dashboard')
+        return redirect('/cine')
     return render_template('index.html')
 
 @app.route('/registro', methods=['POST'])
@@ -17,7 +17,6 @@ def registro():
         session['reg_data'] = request.form
         return redirect('/')
 
-    # Encriptar la contraseña antes de guardar en MySQL
     password_hash = bcrypt.generate_password_hash(request.form['password'])
 
     data = {
@@ -29,24 +28,25 @@ def registro():
 
     usuario_id = Usuario.save(data)
     session['usuario_id'] = usuario_id
+    session['usuario_nombre'] = request.form['nombre']  # Guardamos el nombre al registrarse
     session.pop('reg_data', None)
 
-    return redirect('/dashboard')
+    return redirect('/cine')
 
 @app.route('/login', methods=['POST'])
 def login():
     usuario = Usuario.get_by_email(request.form['email'])
 
-    # Verificar existencia y comparar contraseña desencriptando con Bcrypt
     if not usuario or not bcrypt.check_password_hash(usuario.password, request.form['password']):
         flash("E-mail o contraseña incorrectos.", "login_error")
         session['login_email'] = request.form['email']
         return redirect('/')
 
     session['usuario_id'] = usuario.id
+    session['usuario_nombre'] = usuario.nombre  # Guardamos el nombre al iniciar sesión
     session.pop('login_email', None)
 
-    return redirect('/dashboard')
+    return redirect('/cine')
 
 @app.route('/logout')
 def logout():
