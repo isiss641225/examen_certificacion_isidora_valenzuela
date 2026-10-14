@@ -1,0 +1,155 @@
+/* Paleta: Pop Cinema Pastel (Claro y Colorido) */
+:root {
+    --bg-light: #e0f2fe;
+    --card-bg: #ffffff;
+    --input-bg: #f8fafc;
+    --primary-coral: #ff6b6b;
+    --primary-hover: #ff5252;
+    --text-dark: #1e293b;
+    --text-muted: #64748b;
+    --accent-teal: #0d9488;
+    --border-color: #cbd5e1;
+    --error-red: #ef4444;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg-light);
+    color: var(--text-dark);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Nav Bar / Encabezado */
+.nav {
+    background: #0f172a;
+    padding: 18px 40px;
+    border-bottom: 4px solid var(--primary-coral);
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.nav h2 {
+    color: #38bdf8;
+    font-size: 26px;
+    letter-spacing: 1.5px;
+    font-weight: 700;
+}
+
+/* Contenedor Principal Centrado */
+.grid {
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    gap: 30px;
+    max-width: 900px;
+    width: 90%;
+    margin: 40px auto;
+    flex-wrap: wrap;
+}
+
+/* Cajas Cuadradas con Puntas Redondeadas */
+.box {
+    background: var(--card-bg);
+    border: 2px solid #bae6fd;
+    border-radius: 20px;
+    padding: 30px 25px;
+    flex: 1;
+    min-width: 320px;
+    box-shadow: 0 10px 25px rgba(14, 165, 233, 0.15);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.box:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(14, 165, 233, 0.25);
+}
+
+.box h3 {
+    color: var(--accent-teal);
+    font-size: 22px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: 700;
+    border-bottom: 2px dashed #99f6e4;
+    padding-bottom: 10px;
+}
+
+/* Formulario e Inputs */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+form div {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+label {
+    font-size: 14px;
+    font-weight: 700;
+    color: #334155;
+}
+
+input[type="text"],
+input[type="password"],
+textarea,
+select {
+    width: 100%;
+    padding: 12px 15px;
+    border-radius: 12px;
+    border: 2px solid var(--border-color);
+    background-color: var(--input-bg);
+    color: var(--text-dark);
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus,
+textarea:focus {
+    outline: none;
+    border-color: var(--primary-coral);
+    box-shadow: 0 0 0 4px rgba(255, 107, 107, 0.2);
+    background-color: #ffffff;
+}
+
+/* Botones Coloridos */
+button, .btn {
+    width: 100%;
+    padding: 13px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--primary-coral), #ff8e8e);
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 15px;
+    box-shadow: 0 4px 12px rgba(255, 107, 107, 0.35);
+    transition: all 0.3s ease;
+}
+
+button:hover, .btn:hover {
+    background: linear-gradient(135deg, var(--primary-hover), #ff6b6b);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(255, 107, 107, 0.5);
+}
+
+/* Mensajes de Error */
+.error {
+    color: var(--error-red);
+    font-size: 12px;
+    font-weight: 700;
+    margin-top: 2px;
+}

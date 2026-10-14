@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>CinePedia - Login / Registro</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='static/css/style.css') }}">
+    <meta name="author" content="isidoravalenzuela@liceovvh.cl">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
     <div class="nav">
-        <h2>CinePedia</h2>
+        <h2>🎬 CinePedia</h2>
     </div>
 
     <div class="grid">
@@ -16,38 +17,37 @@
             <h3>Registro</h3>
             <form action="/registro" method="POST">
                 <div>
-                    <label>Nombre:</label><br>
+                    <label>Nombre:</label>
                     {% for m in get_flashed_messages(category_filter=["reg_nombre"]) %}
                         <span class="error">{{ m }}</span>
                     {% endfor %}
                     <input type="text" name="nombre" value="{{ reg_data.nombre if reg_data }}">
                 </div>
                 <div>
-                    <label>Apellido:</label><br>
+                    <label>Apellido:</label>
                     {% for m in get_flashed_messages(category_filter=["reg_apellido"]) %}
                         <span class="error">{{ m }}</span>
                     {% endfor %}
                     <input type="text" name="apellido" value="{{ reg_data.apellido if reg_data }}">
                 </div>
                 <div>
-                    <label>E-mail:</label><br>
+                    <label>E-mail:</label>
                     {% for m in get_flashed_messages(category_filter=["reg_email"]) %}
                         <span class="error">{{ m }}</span>
                     {% endfor %}
                     <input type="text" name="email" value="{{ reg_data.email if reg_data }}">
                 </div>
                 <div>
-                    <label>Contraseña:</label><br>
+                    <label>Contraseña:</label>
                     {% for m in get_flashed_messages(category_filter=["reg_password"]) %}
                         <span class="error">{{ m }}</span>
                     {% endfor %}
                     <input type="password" name="password">
                 </div>
                 <div>
-                    <label>Conf. Contraseña:</label><br>
+                    <label>Conf. Contraseña:</label>
                     <input type="password" name="conf_password">
                 </div>
-                <br>
                 <button type="submit">Registrar</button>
             </form>
         </div>
@@ -60,14 +60,13 @@
             {% endfor %}
             <form action="/login" method="POST">
                 <div>
-                    <label>E-mail:</label><br>
+                    <label>E-mail:</label>
                     <input type="text" name="email" value="{{ login_email if login_email }}">
                 </div>
                 <div>
-                    <label>Contraseña:</label><br>
+                    <label>Contraseña:</label>
                     <input type="password" name="password">
                 </div>
-                <br>
                 <button type="submit">Iniciar Sesión</button>
             </form>
         </div>

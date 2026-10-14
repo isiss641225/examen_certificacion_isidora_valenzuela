@@ -1,8 +1,12 @@
 from flask_app.config.mysqlconnection import connectToMySQL
-from flask_app import DATABASE, bcrypt
 from flask import flash
+import re
+
+EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
 
 class Usuario:
+    db = "cinepedia_db"
+
     def __init__(self, data):
         self.id = data['id']
         self.nombre = data['nombre']
@@ -14,14 +18,17 @@ class Usuario:
 
     @classmethod
     def save(cls, data):
-        query = "INSERT INTO usuarios (nombre, apellido, email, password) VALUES (%(nombre)s, %(apellido)s, %(email)s, %(password)s);"
-        return connectToMySQL(DATABASE).query_db(query, data)
+        query = """
+            INSERT INTO usuarios (nombre, apellido, email, password) 
+            VALUES (%(nombre)s, %(apellido)s, %(email)s, %(password)s);
+        """
+        return connectToMySQL(cls.db).query_db(query, data)
 
     @classmethod
     def get_by_email(cls, email):
         query = "SELECT * FROM usuarios WHERE email = %(email)s;"
         data = {'email': email}
-        results = connectToMySQL(DATABASE).query_db(query, data)
+        results = connectToMySQL(cls.db).query_db(query, data)
         if len(results) < 1:
             return False
         return cls(results[0])
@@ -30,45 +37,38 @@ class Usuario:
     def get_by_id(cls, user_id):
         query = "SELECT * FROM usuarios WHERE id = %(id)s;"
         data = {'id': user_id}
-        results = connectToMySQL(DATABASE).query_db(query, data)
+        results = connectToMySQL(cls.db).query_db(query, data)
         if len(results) < 1:
             return False
         return cls(results[0])
 
     @staticmethod
-    def validar_registro(formulario):
-        es_valido = True
-        
-        if len(formulario['nombre']) < 2:
-            flash("Nombre debe tener al menos 2 caracteres", "reg_nombre")
-            es_valido = False
-            
-        if len(formulario['apellido']) < 2:
-            flash("Apellido debe tener al menos 2 caracteres", "reg_apellido")
-            es_valido = False
-            
-        if "@" not in formulario['email'] or len(formulario['email']) < 5:
-            flash("Email invalido", "reg_email")
-            es_valido = False
+    def validar_registro(data):
+        is_valid = True
+
+        if len(data['nombre'].strip()) < 2:
+            flash("El nombre debe tener al menos 2 caracteres.", "reg_nombre")
+            is_valid = False
+
+        if len(data['apellido'].strip()) < 2:
+            flash("El apellido debe tener al menos 2 caracteres.", "reg_apellido")
+            is_valid = False
+
+        if not EMAIL_REGEX.match(data['email']):
+            flash("E-mail inválido.", "reg_email")
+            is_valid = False
         else:
-            usuario_existe = Usuario.get_by_email(formulario['email'])
-            if usuario_existe:
-                flash("El email ya esta registrado", "reg_email")
-                es_valido = False
+            usuario_existente = Usuario.get_by_email(data['email'])
+            if usuario_existente:
+                flash("Este correo ya está registrado.", "reg_email")
+                is_valid = False
 
-        if len(formulario['password']) < 1 or formulario['password'] != formulario['conf_password']:
-            flash("Las contraseñas no coinciden", "reg_password")
-            es_valido = False
+        if len(data['password']) < 8:
+            flash("La contraseña debe tener al menos 8 caracteres.", "reg_password")
+            is_valid = False
 
-        return es_valido
+        if data['password'] != data['conf_password']:
+            flash("Las contraseñas no coinciden.", "reg_password")
+            is_valid = False
 
-    @staticmethod
-    def validar_login(formulario):
-        usuario = Usuario.get_by_email(formulario['email'])
-        if not usuario:
-            flash("Email o contraseña incorrectos", "login_error")
-            return False
-        if not bcrypt.check_password_hash(usuario.password, formulario['password']):
-            flash("Email o contraseña incorrectos", "login_error")
-            return False
-        return usuario
+        return is_valid

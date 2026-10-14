@@ -1,1 +1,2 @@
-# examen_certificacion_isidora_valenzuela
+# Examen de certificación
+# Autora: Isidora Valenzuela 
