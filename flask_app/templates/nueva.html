@@ -1,46 +1,61 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    <!-- Configuración del mapa de caracteresutf-8 -->
     <meta charset="UTF-8">
     <title>Nueva Película</title>
+    <!-- Metadato de autoría -->
     <meta name="author" content="isidoravalenzuela@liceovvh.cl">
+    <!-- Enlace a la hoja de estilos personalizada -->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
+    <!-- Barra de navegación superior -->
     <div class="nav">
         <h2>CinePedia</h2>
         <div>
+            <!-- Accesos a las rutas de navegación principal -->
             <a href="/cine">Inicio</a> | 
             <a href="/logout">Cerrar Sesión</a>
         </div>
     </div>
 
+    <!-- Contenedor del formulario de registro de películas -->
     <div class="box">
         <h3>Nueva Película</h3>
+        <!-- Formulario POST para enviar la información del nuevo registro al controlador -->
         <form action="/cine/nueva" method="POST">
+            <!-- Campo Título -->
             <div>
                 <label>Nombre de Peli:</label><br>
+                <!-- Captura y despliegue de mensajes flash de validación para título -->
                 {% for m in get_flashed_messages(category_filter=["err_titulo"]) %}
                     <span class="error">{{ m }}</span>
                 {% endfor %}
                 <input type="text" name="titulo" value="{{ data.titulo if data }}">
             </div>
+            <!-- Campo Director -->
             <div>
                 <label>Director:</label><br>
+                <!-- Captura y despliegue de mensajes flash de validación para director -->
                 {% for m in get_flashed_messages(category_filter=["err_director"]) %}
                     <span class="error">{{ m }}</span>
                 {% endfor %}
                 <input type="text" name="director" value="{{ data.director if data }}">
             </div>
+            <!-- Campo Fecha de Estreno -->
             <div>
                 <label>Fecha Estreno:</label><br>
+                <!-- Captura y despliegue de mensajes flash de validación para fecha -->
                 {% for m in get_flashed_messages(category_filter=["err_fecha"]) %}
                     <span class="error">{{ m }}</span>
                 {% endfor %}
                 <input type="date" name="fecha_estreno" value="{{ data.fecha_estreno if data }}">
             </div>
+            <!-- Campo Sinopsis -->
             <div>
                 <label>Sinopsis:</label><br>
+                <!-- Captura y despliegue de mensajes flash de validación para sinopsis -->
                 {% for m in get_flashed_messages(category_filter=["err_sinopsis"]) %}
                     <span class="error">{{ m }}</span>
                 {% endfor %}
@@ -48,6 +63,7 @@
                 <textarea name="sinopsis" rows="4" cols="50">{{ data.sinopsis if data }}</textarea>
             </div>
             <br>
+            <!-- Botón de envío del formulario -->
             <button type="submit">Guardar Película</button>
         </form>
     </div>

@@ -1,14 +1,19 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    <!-- Configuración del mapa de caracteres y compatibilidad responsiva -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Título de la página dinámico según la película consultada -->
     <title>CinePedia - {{ pelicula.titulo }}</title>
+    <!-- Datos del creador / estudiante -->
     <meta name="author" content="isidoravalenzuela@liceovvh.cl">
+    <!-- Bootstrap 5 CSS CDN -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Hoja de estilo estática de la aplicación -->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
     <style>
-        /* Ajustes de precisión para botones y comentarios en ver.html */
+        /* Reglas CSS locales de ajuste fino para botones y contenedores en ver.html */
         .btn-custom-send {
             width: auto !important;
             padding: 8px 24px !important;
@@ -34,37 +39,43 @@
 </head>
 <body style="background-color: #e0f2fe; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
 
-    <!-- Navbar Superior -->
+    <!-- Navbar Superior: Cabecera y accesos rápidos -->
     <nav class="navbar navbar-expand-lg bg-white shadow-sm py-3 mb-4 border-bottom border-info border-2">
         <div class="container d-flex justify-content-between align-items-center">
             <h2 class="m-0 fw-bold text-info">🎬 CinePedia</h2>
             <div>
+                <!-- Enlace para volver al inicio del catálogo -->
                 <a href="/cine" class="btn btn-outline-info fw-semibold me-2" style="width: auto !important;">Inicio</a>
+                <!-- Enlace de cierre de sesión -->
                 <a href="/logout" class="btn btn-danger btn-sm px-3 fw-semibold" style="width: auto !important;">Cerrar Sesión</a>
             </div>
         </div>
     </nav>
 
-    <!-- Detalle de la Película -->
+    <!-- Sección del Detalle de la Película -->
     <div class="container" style="max-width: 800px;">
         <div class="card border-0 shadow-sm rounded-4 bg-white p-4 p-md-5 mb-4">
+            <!-- Despliegue de título y nombre del usuario creador -->
             <h1 class="fw-bold text-info mb-3">{{ pelicula.titulo }}</h1>
             <p class="text-muted mb-3"><strong>Publicado por:</strong> <span class="text-dark fw-semibold">{{ pelicula.creador_nombre }}</span></p>
             
             <hr class="text-info opacity-25 mb-4">
 
+            <!-- Información técnica del largometraje -->
             <div class="mb-3">
                 <p class="mb-2"><strong>Director:</strong> {{ pelicula.director }}</p>
                 <p class="mb-2"><strong>Fecha:</strong> {{ pelicula.fecha_estreno }}</p>
             </div>
 
+            <!-- Bloque estilizado para la sinopsis -->
             <div class="mt-4 p-3 rounded-3" style="background-color: #f8fafc; border-left: 4px solid #38bdf8;">
                 <h5 class="fw-bold text-secondary mb-2">Sinopsis:</h5>
                 <p class="m-0 text-dark" style="line-height: 1.6;">{{ pelicula.sinopsis }}</p>
             </div>
         </div>
 
-        <!-- Formulario de Comentarios -->
+        <!-- Formulario para agregar Comentarios (Bonus) -->
+        <!-- Condición de restricción: Impide que el autor de la película comente su propia publicación -->
         {% if pelicula.usuario_id != session['usuario_id'] %}
         <div class="card border-0 shadow-sm rounded-4 bg-white p-4 mb-4">
             <h5 class="fw-bold text-secondary mb-3">Deja un comentario</h5>
@@ -77,10 +88,12 @@
         </div>
         {% endif %}
 
-        <!-- Lista de Comentarios -->
+        <!-- Listado de Comentarios Registrados -->
         <div class="card border-0 shadow-sm rounded-4 bg-white p-4 mb-5">
             <h5 class="fw-bold text-dark mb-3">Comentarios</h5>
+            <!-- Evaluación si existen comentarios registrados en la BD para esta película -->
             {% if comentarios %}
+                <!-- Bucle para listar los comentarios asociando autor y fecha -->
                 {% for c in comentarios %}
                 <div class="comment-item d-flex justify-content-between align-items-center">
                     <div>
@@ -93,12 +106,14 @@
                         <p class="m-0 text-dark" style="font-size: 14px;">{{ c.contenido }}</p>
                     </div>
 
+                    <!-- Validación de permisos: Solamente el autor del comentario puede eliminarlo -->
                     {% if c.usuario_id == session['usuario_id'] %}
                         <a href="/comentario/borrar/{{ c.id }}" class="btn btn-outline-danger rounded-3 btn-custom-delete">Borrar</a>
                     {% endif %}
                 </div>
                 {% endfor %}
             {% else %}
+                <!-- Mensaje cuando la película no tiene comentarios registrados -->
                 <p class="text-muted m-0">No hay comentarios aún. ¡Sé el primero en opinar!</p>
             {% endif %}
         </div>

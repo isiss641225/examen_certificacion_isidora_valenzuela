@@ -1,63 +1,81 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    <!-- Configuración del mapa de caracteres y título de la página -->
     <meta charset="UTF-8">
     <title>CinePedia - Login / Registro</title>
+    <!-- Metadato de autoría del proyecto -->
     <meta name="author" content="isidoravalenzuela@liceovvh.cl">
+    <!-- Enlace a la hoja de estilos CSS estática de la aplicación -->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
+    <!-- Barra de navegación superior -->
     <div class="nav">
         <h2>🎬 CinePedia</h2>
     </div>
 
+    <!-- Layout en cuadrícula para dividir Registro e Inicio de Sesión -->
     <div class="grid">
-        <!-- Registro -->
+        <!-- Sección del Formulario de Registro -->
         <div class="box">
             <h3>Registro</h3>
+            <!-- Formulario POST que envía los datos del nuevo usuario a la ruta /registro -->
             <form action="/registro" method="POST">
+                <!-- Campo Nombre -->
                 <div>
                     <label>Nombre:</label>
+                    <!-- Captura y despliegue de mensajes flash de error para el nombre -->
                     {% for m in get_flashed_messages(category_filter=["reg_nombre"]) %}
                         <span class="error">{{ m }}</span>
                     {% endfor %}
                     <input type="text" name="nombre" value="{{ reg_data.nombre if reg_data }}">
                 </div>
+                <!-- Campo Apellido -->
                 <div>
                     <label>Apellido:</label>
+                    <!-- Captura y despliegue de mensajes flash de error para el apellido -->
                     {% for m in get_flashed_messages(category_filter=["reg_apellido"]) %}
                         <span class="error">{{ m }}</span>
                     {% endfor %}
                     <input type="text" name="apellido" value="{{ reg_data.apellido if reg_data }}">
                 </div>
+                <!-- Campo E-mail -->
                 <div>
                     <label>E-mail:</label>
+                    <!-- Captura y despliegue de mensajes flash de error para el email -->
                     {% for m in get_flashed_messages(category_filter=["reg_email"]) %}
                         <span class="error">{{ m }}</span>
                     {% endfor %}
                     <input type="text" name="email" value="{{ reg_data.email if reg_data }}">
                 </div>
+                <!-- Campo Contraseña -->
                 <div>
                     <label>Contraseña:</label>
+                    <!-- Captura y despliegue de mensajes flash de error para la contraseña -->
                     {% for m in get_flashed_messages(category_filter=["reg_password"]) %}
                         <span class="error">{{ m }}</span>
                     {% endfor %}
                     <input type="password" name="password">
                 </div>
+                <!-- Campo Confirmación de Contraseña -->
                 <div>
                     <label>Conf. Contraseña:</label>
                     <input type="password" name="conf_password">
                 </div>
+                <!-- Botón para procesar el registro -->
                 <button type="submit">Registrar</button>
             </form>
         </div>
 
-        <!-- Login -->
+        <!-- Sección del Formulario de Inicio de Sesión -->
         <div class="box">
             <h3>Inicio de Sesión</h3>
+            <!-- Despliegue de errores de credenciales al iniciar sesión -->
             {% for m in get_flashed_messages(category_filter=["login_error"]) %}
                 <span class="error">{{ m }}</span>
             {% endfor %}
+            <!-- Formulario POST que envía credenciales a la ruta /login -->
             <form action="/login" method="POST">
                 <div>
                     <label>E-mail:</label>
@@ -67,6 +85,7 @@
                     <label>Contraseña:</label>
                     <input type="password" name="password">
                 </div>
+                <!-- Botón para iniciar sesión -->
                 <button type="submit">Iniciar Sesión</button>
             </form>
         </div>

@@ -1,52 +1,68 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    <!-- Configuración del mapa de caracteres utf-8 -->
     <meta charset="UTF-8">
     <title>Editar Película</title>
+    <!-- Metadato de autoría -->
     <meta name="author" content="isidoravalenzuela@liceovvh.cl">
+    <!-- Enlace a la hoja de estilos personalizada -->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
+    <!-- Barra de navegación superior -->
     <div class="nav">
         <h2>CinePedia</h2>
         <div>
+            <!-- Rutas de retorno al inicio y cierre de sesión -->
             <a href="/cine">Inicio</a> | 
             <a href="/logout">Cerrar Sesión</a>
         </div>
     </div>
 
+    <!-- Contenedor del formulario de edición -->
     <div class="box">
         <h3>Editar Película</h3>
+        <!-- Formulario POST que envía el ID de la película a actualizar en el action -->
         <form action="/cine/editar/{{ peli_id }}" method="POST">
+            <!-- Edición de Título con precarga de datos -->
             <div>
                 <label>Nombre de Peli:</label><br>
+                <!-- Validación flash para el título -->
                 {% for m in get_flashed_messages(category_filter=["err_titulo"]) %}
                     <span class="error">{{ m }}</span>
                 {% endfor %}
                 <input type="text" name="titulo" value="{{ pelicula.titulo }}">
             </div>
+            <!-- Edición de Director con precarga de datos -->
             <div>
                 <label>Director:</label><br>
+                <!-- Validación flash para el director -->
                 {% for m in get_flashed_messages(category_filter=["err_director"]) %}
                     <span class="error">{{ m }}</span>
                 {% endfor %}
                 <input type="text" name="director" value="{{ pelicula.director }}">
             </div>
+            <!-- Edición de Fecha de Estreno con precarga de datos -->
             <div>
                 <label>Fecha Estreno:</label><br>
+                <!-- Validación flash para la fecha -->
                 {% for m in get_flashed_messages(category_filter=["err_fecha"]) %}
                     <span class="error">{{ m }}</span>
                 {% endfor %}
                 <input type="date" name="fecha_estreno" value="{{ pelicula.fecha_estreno }}">
             </div>
+            <!-- Edición de Sinopsis con precarga de datos -->
             <div>
                 <label>Sinopsis:</label><br>
+                <!-- Validación flash para la sinopsis -->
                 {% for m in get_flashed_messages(category_filter=["err_sinopsis"]) %}
                     <span class="error">{{ m }}</span>
                 {% endfor %}
                 <textarea name="sinopsis" rows="4" cols="50">{{ pelicula.sinopsis }}</textarea>
             </div>
             <br>
+            <!-- Botón para confirmar la edición del registro -->
             <button type="submit">Guardar Película</button>
         </form>
     </div>
